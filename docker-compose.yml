@@ -1,9 +1,7 @@
 version: "3.9"
 services:
   rails_6:
-    build:
-      context: .
-      dockerfile: ./rails_6/Dockerfile
+    build: ./rails_6
     depends_on:
       - database
     command: bin/rails s -p 3000 -b 0.0.0.0
@@ -17,9 +15,7 @@ services:
     tty: true
     stdin_open: true
   rails_7:
-    build:
-      context: .
-      dockerfile: ./rails_7/Dockerfile
+    build: ./rails_7
     depends_on:
       - database
     command: bin/rails s -p 3000 -b 0.0.0.0
