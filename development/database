@@ -1,0 +1,3 @@
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=development_password
+POSTGRES_DB=rails_test_development

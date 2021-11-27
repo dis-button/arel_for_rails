@@ -1,0 +1,44 @@
+version: "3.9"
+services:
+  rails_6:
+    build:
+      context: .
+      dockerfile: ./rails_6/Dockerfile
+    depends_on:
+      - database
+    command: bin/rails s -p 3000 -b 0.0.0.0
+    volumes:
+      - ./rails_6:/rails_6
+    ports:
+      - '3006:3000'
+    env_file:
+      - .env/development/web
+      - .env/development/database
+    tty: true
+    stdin_open: true
+  rails_7:
+    build:
+      context: .
+      dockerfile: ./rails_7/Dockerfile
+    depends_on:
+      - database
+    command: bin/rails s -p 3000 -b 0.0.0.0
+    volumes:
+      - ./rails_7:/rails_7
+    ports:
+      - '3007:3000'
+    env_file:
+      - .env/development/web
+      - .env/development/database
+    tty: true
+    stdin_open: true
+  database:
+    image: postgres
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    env_file:
+      - .env/development/database
+volumes:
+  postgres-data:
