@@ -4,5 +4,5 @@ Since arel is in rails, it has become even more "private" API with possibility o
 
 # Generation
 ```bash
-docker-compose run --no-deps rails_6 rails new . --force --database=postgresql
+docker-compose run --no-deps rails_6 rails new . --force --database=postgresql --skip-javascript --skip-test
 ```
