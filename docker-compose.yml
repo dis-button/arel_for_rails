@@ -7,7 +7,7 @@ services:
     command: bin/rails s -p 3000 -b 0.0.0.0
     volumes:
       - ./rails_6:/rails_6
-      - db-folder:/rails_6/db/
+      - ./general/db/:/rails_6/db/
     ports:
       - '3006:3000'
     env_file:
@@ -22,7 +22,7 @@ services:
     command: bin/rails s -p 3000 -b 0.0.0.0
     volumes:
       - ./rails_7:/rails_7
-      - db-folder:/rails_7/db/
+      - ./general/db/:/rails_7/db/
     ports:
       - '3007:3000'
     env_file:
@@ -40,4 +40,3 @@ services:
       - .env/development/database
 volumes:
   postgres-data:
-  db-folder:
