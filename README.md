@@ -22,8 +22,4 @@ docker exec -it arel_for_rails_rails_6_1 rails db:create db:migrate
 ```bash
 docker exec -it arel_for_rails_rails_7_1 /bin/bash
 ```
-### rails console:
-```bash
-docker-compose exec arel_for_rails_rails_7_1 rails c
-```
 
