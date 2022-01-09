@@ -18,6 +18,7 @@ docker exec -it arel_for_rails_rails_6_1 rails g model comment content
 docker exec -it arel_for_rails_rails_6_1 rails db:create db:migrate
 ```
 # usefull comands
+lounch the environment first
 ### containers bash:
 ```bash
 docker exec -it arel_for_rails-rails_6-1 /bin/bash
@@ -25,4 +26,10 @@ docker exec -it arel_for_rails-rails_6-1 /bin/bash
 ### test
 ```bash
 docker exec -it arel_for_rails-rails_6-1 bundle exec rails spec
+docker exec -it arel_for_rails-rails_7-1 bundle exec rails spec
+```
+
+### test
+```bash
+docker exec -it arel_for_rails-rails_6-1 bundle exec rubocop
 ```
