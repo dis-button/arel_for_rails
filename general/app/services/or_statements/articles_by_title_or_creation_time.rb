@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class OrStatements::ArticlesByTitleOrCreationTime
   class << self
     def call

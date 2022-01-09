@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SimpleRequests::FindingUser
   class << self
     def call

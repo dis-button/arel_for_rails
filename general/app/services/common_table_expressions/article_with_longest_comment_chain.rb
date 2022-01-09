@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CommonTableExpressions::ArticleWithLongestCommentChain
   class << self
     def call
@@ -10,11 +12,11 @@ class CommonTableExpressions::ArticleWithLongestCommentChain
       article_thread_count_table = Arel::Table.new(:article_thread_count)
 
       comment_chain_base_select = Application::Comment.arel_table.project(
-          Application::Comment.arel_table[:id].as('super_parent_id'),
-          Application::Comment.arel_table[:id].as('id'),
-          Application::Comment.arel_table[:article_id].as('article_id'),
-          Arel::Nodes::SqlLiteral.new('1::bigint').as('thread_length')
-        ).where(Application::Comment.arel_table[:parent_id].not_eq(nil))
+        Application::Comment.arel_table[:id].as('super_parent_id'),
+        Application::Comment.arel_table[:id].as('id'),
+        Application::Comment.arel_table[:article_id].as('article_id'),
+        Arel::Nodes::SqlLiteral.new('1::bigint').as('thread_length')
+      ).where(Application::Comment.arel_table[:parent_id].not_eq(nil))
       # puts comment_chain_base_select.to_sql
       # SELECT
       #   "comments"."id" AS super_parent_id,
@@ -28,8 +30,13 @@ class CommonTableExpressions::ArticleWithLongestCommentChain
         comment_chain_table[:super_parent_id].as('super_parent_id'),
         Application::Comment.arel_table[:id].as('id'),
         Application::Comment.arel_table[:article_id].as('article_id'),
-        Arel::Nodes::Addition.new(comment_chain_table[:super_parent_id], Arel::Nodes::SqlLiteral.new('1::bigint')).as('thread_length')
-      ).join(comment_chain_table).on(comment_chain_table[:id].eq(Application::Comment.arel_table[:parent_id]))
+        Arel::Nodes::Addition.new(
+          comment_chain_table[:super_parent_id],
+          Arel::Nodes::SqlLiteral.new('1::bigint')
+        ).as('thread_length')
+      ).join(comment_chain_table).on(
+        comment_chain_table[:id].eq(Application::Comment.arel_table[:parent_id])
+      )
       # puts comment_chain_recursive_select.to_sql
       # SELECT
       #   "comment_chain"."super_parent_id" AS super_parent_id,
@@ -93,7 +100,9 @@ class CommonTableExpressions::ArticleWithLongestCommentChain
       article_thread_count_select = Application::Comment.arel_table.project(
         Arel::Nodes::SqlLiteral.new('1').count.as('thread_count'),
         Application::Comment.arel_table[:article_id].as('article_id')
-      ).where(Application::Comment.arel_table[:parent_id].eq(nil)).group(Application::Comment.arel_table[:article_id])
+      ).where(
+        Application::Comment.arel_table[:parent_id].eq(nil)
+      ).group(Application::Comment.arel_table[:article_id])
       # puts article_thread_count_select.to_sql
       # SELECT
       #   COUNT(1) AS thread_count,
@@ -124,9 +133,18 @@ class CommonTableExpressions::ArticleWithLongestCommentChain
             article_thread_count_table[:thread_count]
           ).as('article_score')
         ).
-        join(article_max_chain_statistics_table).on(article_max_chain_statistics_table[:article_id].eq(Application::Article.arel_table[:id])).
-        join(article_thread_count_table).on(article_thread_count_table[:article_id].eq(Application::Article.arel_table[:id])).
-        with(:recursive, comment_chain_cte, article_max_chain_statistics_cte, article_thread_count_cte)
+        join(article_max_chain_statistics_table).on(
+          article_max_chain_statistics_table[:article_id].eq(Application::Article.arel_table[:id])
+        ).
+        join(article_thread_count_table).on(
+          article_thread_count_table[:article_id].eq(Application::Article.arel_table[:id])
+        ).
+        with(
+          :recursive,
+          comment_chain_cte,
+          article_max_chain_statistics_cte,
+          article_thread_count_cte
+        )
       # puts sql_statement.to_sql
       # WITH RECURSIVE "comment_chain" AS (
       #   (

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class FunctionsAndAttributes::OrderingArticles
   class << self
     def call

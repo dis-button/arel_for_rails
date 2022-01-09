@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
-  factory :article, class: "Application::Article" do
+  factory :article, class: 'Application::Article' do
     author
     subject { Faker::Lorem.sentence }
     body { Faker::Lorem.paragraph }

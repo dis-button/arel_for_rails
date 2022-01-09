@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CommonTableExpressions::OrderArticles
   class << self
     def call
@@ -33,7 +35,9 @@ class CommonTableExpressions::OrderArticles
       #   SELECT
       #     "comments"."article_id",
       #     length("comments"."content") AS comment_length,
-      #     row_number() OVER (PARTITION BY "comments"."article_id" ORDER BY length("comments"."content") DESC) = 1 AS is_longest_comment
+      #     row_number() OVER (
+      #       PARTITION BY "comments"."article_id" ORDER BY length("comments"."content") DESC
+      #     ) = 1 AS is_longest_comment
       #   FROM "comments"
 
       # lets define the CTE itself
@@ -46,7 +50,9 @@ class CommonTableExpressions::OrderArticles
       #   SELECT
       #     "comments"."article_id",
       #     length("comments"."content") AS comment_length,
-      #     row_number() OVER (PARTITION BY "comments"."article_id" ORDER BY length("comments"."content") DESC) = 1 AS is_longest_comment
+      #     row_number() OVER (
+      #       PARTITION BY "comments"."article_id" ORDER BY length("comments"."content") DESC
+      #     ) = 1 AS is_longest_comment
       #   FROM "comments"
       # )
 

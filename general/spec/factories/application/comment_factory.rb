@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
-  factory :comment, class: "Application::Comment" do
+  factory :comment, class: 'Application::Comment' do
     article
     commenter
     content { Faker::Lorem.sentence }

@@ -1,13 +1,17 @@
+# frozen_string_literal: true
+
 class Application::User < ApplicationRecord
   has_many :comments,
-    dependent: :destroy,
-    class_name: 'Application::Comment',
-    foreign_key: :commenter_id
+           dependent: :destroy,
+           class_name: 'Application::Comment',
+           foreign_key: :commenter_id,
+           inverse_of: :commenter
 
   has_many :articles,
-    dependent: :destroy,
-    class_name: 'Application::Article',
-    foreign_key: :author_id
+           dependent: :destroy,
+           class_name: 'Application::Article',
+           foreign_key: :author_id,
+           inverse_of: :author
 
   validates :username, presence: true, uniqueness: true
 end

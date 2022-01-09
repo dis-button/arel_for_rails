@@ -1,22 +1,23 @@
+# frozen_string_literal: true
+
 class Application::Comment < ApplicationRecord
   belongs_to :commenter,
-    class_name: 'Application::User'
+             class_name: 'Application::User'
 
   belongs_to :article,
-    class_name: 'Application::Article'
+             class_name: 'Application::Article'
 
   belongs_to :parent,
-    class_name: 'Application::Comment',
-    optional: true
+             class_name: 'Application::Comment',
+             optional: true
 
   has_many :children,
-    class_name: 'Application::Comment',
-    foreign_key: :parent_id,
-    dependent: :destroy
+           class_name: 'Application::Comment',
+           foreign_key: :parent_id,
+           dependent: :destroy,
+           inverse_of: :parent
 
   validates :content, presence: true
-  validates :commenter, presence: true
-  validates :article, presence: true
 end
 
 # == Schema Information

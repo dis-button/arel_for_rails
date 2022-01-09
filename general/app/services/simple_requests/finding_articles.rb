@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SimpleRequests::FindingArticles
   class << self
     def call
