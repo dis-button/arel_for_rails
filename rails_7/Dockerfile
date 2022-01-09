@@ -1,4 +1,4 @@
-FROM ruby:2.7.5
+FROM ruby:3.1.0
 
 # set up contact person for our project
 LABEL maintainer='martins.kruze@gmail.com'
