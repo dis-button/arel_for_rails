@@ -29,7 +29,8 @@ docker exec -it arel_for_rails-rails_6-1 bundle exec rails spec
 docker exec -it arel_for_rails-rails_7-1 bundle exec rails spec
 ```
 
-### test
+### rubocop
 ```bash
 docker exec -it arel_for_rails-rails_6-1 bundle exec rubocop
+docker exec -it arel_for_rails-rails_7-1 bundle exec rubocop
 ```
