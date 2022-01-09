@@ -1,5 +1,7 @@
-factory :user, class: "Application::User" do
-  username { Faker::Internet.unique.username }
+FactoryBot.define do
+  factory :user, class: "Application::User" do
+    username { Faker::Internet.unique.username }
+  end
 end
 
 # == Schema Information

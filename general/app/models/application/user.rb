@@ -1,6 +1,13 @@
 class Application::User < ApplicationRecord
-  has_many :comments, dependent: :destroy, class_name: 'Application::Comment'
-  has_many :articles, dependent: :destroy, class_name: 'Application::Article'
+  has_many :comments,
+    dependent: :destroy,
+    class_name: 'Application::Comment',
+    foreign_key: :commenter_id
+
+  has_many :articles,
+    dependent: :destroy,
+    class_name: 'Application::Article',
+    foreign_key: :author_id
 
   validates :username, presence: true, uniqueness: true
 end

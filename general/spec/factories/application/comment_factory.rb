@@ -1,7 +1,9 @@
-factory :comment, class: "Application::Comment" do
-  article
-  commenter
-  content { Faker::Lorem.sentence }
+FactoryBot.define do
+  factory :comment, class: "Application::Comment" do
+    article
+    commenter
+    content { Faker::Lorem.sentence }
+  end
 end
 
 # == Schema Information

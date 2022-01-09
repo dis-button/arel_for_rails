@@ -1,7 +1,9 @@
-factory :article, class: "Application::Article" do
-  author
-  subject { Faker::Lorem.sentence }
-  body { Faker::Lorem.paragraph }
+FactoryBot.define do
+  factory :article, class: "Application::Article" do
+    author
+    subject { Faker::Lorem.sentence }
+    body { Faker::Lorem.paragraph }
+  end
 end
 
 # == Schema Information
