@@ -12,16 +12,17 @@ docker-compose run --no-deps rails_7 rails new . --force --database=postgresql -
 ```
 ### generate db structure
 ```bash
-docker exec -it arel_for_rails_rails_6_1 rails g model user username
-docker exec -it arel_for_rails_rails_6_1 rails g model article subject body:text
-docker exec -it arel_for_rails_rails_6_1 rails g model comment content
-docker exec -it arel_for_rails_rails_6_1 rails db:create db:migrate
+docker exec -it arel_for_rails-rails_6-1 rails g model user username
+docker exec -it arel_for_rails-rails_6-1 rails g model article subject body:text
+docker exec -it arel_for_rails-rails_6-1 rails g model comment content
+docker exec -it arel_for_rails-rails_6-1 rails db:create db:migrate
 ```
 # usefull comands
 lounch the environment first
 ### containers bash:
 ```bash
 docker exec -it arel_for_rails-rails_6-1 /bin/bash
+docker exec -it arel_for_rails-rails_7-1 /bin/bash
 ```
 ### test
 ```bash
