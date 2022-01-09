@@ -1,8 +1,5 @@
-class Application::User < ApplicationRecord
-  has_many :comments, dependent: :destroy, class_name: 'Application::Comment'
-  has_many :articles, dependent: :destroy, class_name: 'Application::Article'
-
-  validates :username, presence: true, uniqueness: true
+factory :user, class: "Application::User" do
+  username { Faker::Internet.unique.username }
 end
 
 # == Schema Information

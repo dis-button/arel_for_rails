@@ -1,9 +1,7 @@
-class Application::Article < ApplicationRecord
-  belongs_to :author, class_name: 'Application::User'
-  has_many :comments, dependent: :destroy, class_name: 'Application::Comment'
-
-  validates :subject, presence: true
-  validates :author, presence: true
+factory :article, class: "Application::Article" do
+  author
+  subject { Faker::Lorem.sentence }
+  body { Faker::Lorem.paragraph }
 end
 
 # == Schema Information
