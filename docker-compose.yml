@@ -9,6 +9,7 @@ services:
       - ./rails_6:/rails_6
       - ./general/db/:/rails_6/db/
       - ./general/app/services/:/rails_6/app/services/
+      - ./general/app/models/application/:/rails_6/app/models/application/
     ports:
       - '3006:3000'
     env_file:
@@ -25,6 +26,7 @@ services:
       - ./rails_7:/rails_7
       - ./general/db/:/rails_7/db/
       - ./general/app/services/:/rails_7/app/services/
+      - ./general/app/models/application/:/rails_7/app/models/application/
     ports:
       - '3007:3000'
     env_file:
