@@ -5,7 +5,6 @@ class Application::Article < ApplicationRecord
   has_many :comments, dependent: :destroy, class_name: 'Application::Comment'
 
   validates :subject, presence: true
-  validates :author, presence: true
 end
 
 # == Schema Information
