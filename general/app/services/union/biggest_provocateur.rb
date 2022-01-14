@@ -2,15 +2,15 @@
 
 class Union::BiggestProvocateur
   class << self
-    def call
+    def call(username)
       users_comments = Application::Comment.
         joins(:commenter).
-        where(Application::User.arel_table[:username].eq('martins.kruze')).
+        where(Application::User.arel_table[:username].eq(username)).
         arel
 
       users_articles_comments = Application::Comment.
         joins(article: :author).
-        where(Application::User.arel_table[:username].eq('martins.kruze')).
+        where(Application::User.arel_table[:username].eq(username)).
         arel
 
       unionized_results = Arel::Nodes::As.new(
