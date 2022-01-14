@@ -15,14 +15,14 @@ class CommonTableExpressions::ArticleWithLongestCommentChain
         Application::Comment.arel_table[:id].as('super_parent_id'),
         Application::Comment.arel_table[:id].as('id'),
         Application::Comment.arel_table[:article_id].as('article_id'),
-        Arel::Nodes::SqlLiteral.new('1::bigint').as('thread_length')
-      ).where(Application::Comment.arel_table[:parent_id].not_eq(nil))
+        Arel::Nodes::SqlLiteral.new('1').as('thread_length')
+      ).where(Application::Comment.arel_table[:parent_id].eq(nil))
       # puts comment_chain_base_select.to_sql
       # SELECT
       #   "comments"."id" AS super_parent_id,
       #   "comments"."id" AS id,
       #   "comments"."article_id" AS article_id,
-      #   1::bigint AS thread_length
+      #   1 AS thread_length
       # FROM "comments"
       # WHERE "comments"."parent_id" IS NOT NULL
 
@@ -31,8 +31,8 @@ class CommonTableExpressions::ArticleWithLongestCommentChain
         Application::Comment.arel_table[:id].as('id'),
         Application::Comment.arel_table[:article_id].as('article_id'),
         Arel::Nodes::Addition.new(
-          comment_chain_table[:super_parent_id],
-          Arel::Nodes::SqlLiteral.new('1::bigint')
+          comment_chain_table[:thread_length],
+          Arel::Nodes::SqlLiteral.new('1')
         ).as('thread_length')
       ).join(comment_chain_table).on(
         comment_chain_table[:id].eq(Application::Comment.arel_table[:parent_id])
@@ -42,7 +42,7 @@ class CommonTableExpressions::ArticleWithLongestCommentChain
       #   "comment_chain"."super_parent_id" AS super_parent_id,
       #   "comments"."id" AS id,
       #   "comments"."article_id" AS article_id,
-      #   "comment_chain"."super_parent_id" + 1::bigint AS thread_length
+      #   "comment_chain"."super_parent_id" + 1 AS thread_length
       # FROM "comments"
       # INNER JOIN "comment_chain"
       #   ON "comment_chain"."id" = "comments"."parent_id"
@@ -58,20 +58,27 @@ class CommonTableExpressions::ArticleWithLongestCommentChain
       #       "comments"."id" AS super_parent_id,
       #       "comments"."id" AS id,
       #       "comments"."article_id" AS article_id,
-      #       1::bigint AS thread_length
+      #       1 AS thread_length
       #     FROM "comments"
-      #     WHERE "comments"."parent_id" IS NOT NULL
+      #     WHERE "comments"."parent_id" IS NULL
       #   ) UNION ALL (
       #     SELECT
       #       "comment_chain"."super_parent_id" AS super_parent_id,
       #       "comments"."id" AS id,
       #       "comments"."article_id" AS article_id,
-      #       "comment_chain"."super_parent_id" + 1::bigint AS thread_length
+      #       "comment_chain"."super_parent_id" + 1 AS thread_length
       #     FROM "comments"
       #     INNER JOIN "comment_chain"
       #       ON "comment_chain"."id" = "comments"."parent_id"
       #   )
       # )
+
+      # EXTRA NOTE:
+      # If I would like to debug this cte - what does it return, i can get to data like this:
+      # ActiveRecord::Base.connection.execute(
+      #   comment_chain_table.project(comment_chain_table[Arel.star]).
+      #   with(:recursive, comment_chain_cte).to_sql
+      # ).as_json
 
       article_max_chain_statistics_select = comment_chain_table.project(
         comment_chain_table[:thread_length].maximum.as('max_thread_length'),
@@ -144,6 +151,12 @@ class CommonTableExpressions::ArticleWithLongestCommentChain
           comment_chain_cte,
           article_max_chain_statistics_cte,
           article_thread_count_cte
+        ).
+        order(
+          Arel::Nodes::Multiplication.new(
+            article_max_chain_statistics_table[:max_thread_length],
+            article_thread_count_table[:thread_count]
+          ).desc
         )
       # puts sql_statement.to_sql
       # WITH RECURSIVE "comment_chain" AS (
@@ -152,7 +165,7 @@ class CommonTableExpressions::ArticleWithLongestCommentChain
       #       "comments"."id" AS super_parent_id,
       #       "comments"."id" AS id,
       #       "comments"."article_id" AS article_id,
-      #       1::bigint AS thread_length
+      #       1 AS thread_length
       #     FROM
       #       "comments"
       #     WHERE
@@ -163,7 +176,7 @@ class CommonTableExpressions::ArticleWithLongestCommentChain
       #       "comment_chain"."super_parent_id" AS super_parent_id,
       #       "comments"."id" AS id,
       #       "comments"."article_id" AS article_id,
-      #       "comment_chain"."super_parent_id" + 1::bigint AS thread_length
+      #       "comment_chain"."super_parent_id" + 1 AS thread_length
       #     FROM
       #       "comments"
       #       INNER JOIN "comment_chain" ON "comment_chain"."id" = "comments"."parent_id"
@@ -196,6 +209,7 @@ class CommonTableExpressions::ArticleWithLongestCommentChain
       #   "articles"
       #   INNER JOIN "article_max_chain_statistics" ON "article_max_chain_statistics"."article_id" = "articles"."id"
       #   INNER JOIN "article_thread_count" ON "article_thread_count"."article_id" = "articles"."id"
+      # ORDER BY "article_max_chain_statistics"."max_thread_length" * "article_thread_count"."thread_count" DESC
 
       Application::Article.find_by_sql(sql_statement)
     end
