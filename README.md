@@ -10,7 +10,7 @@ Attention - since db folders are shared, please genereate migrations in rails 6 
 ```bash
 docker-compose run --no-deps rails_6 rails new . --force --database=postgresql --api --skip-test
 docker-compose run --no-deps rails_7 rails new . --force --database=postgresql --api --skip-test
-// rails 8?
+# rails 8?
 ```
 ### generate db structure
 ```bash
