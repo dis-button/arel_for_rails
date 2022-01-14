@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :comment, class: 'Application::Comment' do
     article
-    commenter
+    association :commenter, factory: :user
     content { Faker::Lorem.sentence }
   end
 end

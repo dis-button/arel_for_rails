@@ -2,10 +2,10 @@
 
 class SimpleRequests::FindingArticles
   class << self
-    def call
+    def call(matching_text, created_before)
       Application::Article.
-        where(Application::Article.arel_table[:subject].matches('%arel%')).
-        where(Application::Article.arel_table[:created_at].lteq(DateTime.current - 1.day))
+        where(Application::Article.arel_table[:subject].matches("%#{matching_text}%")).
+        where(Application::Article.arel_table[:created_at].lteq(created_before))
     end
   end
 end

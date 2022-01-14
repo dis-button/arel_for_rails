@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :article, class: 'Application::Article' do
-    author
+    association :author, factory: :user
     subject { Faker::Lorem.sentence }
     body { Faker::Lorem.paragraph }
   end
