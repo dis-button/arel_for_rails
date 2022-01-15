@@ -6,7 +6,7 @@ Article with conclusions from this repo [Does my old Arel queries work in Rails 
 lounch the environment first with `docker-compose up`
 
 ### usefull comands
-Warning - your contaider names can be different, you canc check them with `docker ps`
+Warning - your contaider names can be different, you can check them with `docker ps`
 
 #### generate db structure
 ```bash
