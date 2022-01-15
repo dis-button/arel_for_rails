@@ -1,6 +1,6 @@
 # multiple rails/arel versions
 Since arel is in rails, it has become even more "private" API with possibility of breaking changes - lets see how it goes.
-Article with conclusions from this repo [Does my old Arel queries work in Rails 7](https://martinskruze.com/does_arel_work_in_rails_7)
+Article with conclusions and explanations: [Does my old Arel queries work in Rails 7](https://martinskruze.com/does_arel_work_in_rails_7)
 
 ## Running
 lounch the environment first with `docker-compose up`
